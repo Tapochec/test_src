@@ -1,6 +1,6 @@
 package original;
 
-import test.entity.ResultParser;
+import test.entity.ParserSeat;
 
 import java.util.HashMap;
 import java.util.regex.*;
@@ -25,8 +25,8 @@ public class OriginalParserSeat {
 
     }
 
-    public static ResultParser parser(String seatName, long id){
-        ResultParser result = new ResultParser();
+    public static ParserSeat parser(String seatName, long id){
+        ParserSeat result = new ParserSeat();
         result.setId(id);
         Matcher m = Pattern.compile("(?:(?<sector>.*?) (?<sectorName>(?:\\p{Lu}|\\d).*?)|(?<sectorWithoutName>.*)) (?<row>Ряд) (?<rowName>.*) (?<seat>Место) (?<seatName>.*)").matcher(seatName);
         if (m.find()) {

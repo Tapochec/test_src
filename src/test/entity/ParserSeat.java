@@ -1,69 +1,91 @@
 package test.entity;
 
-import java.util.Map;
-import java.util.regex.*;
-
 public class ParserSeat {
+  private long id;
+  private String sector;
+  private String sectorName;
+  private String row;
+  private String rowName;
+  private String seat;
+  private String seatName;
 
-    private static final Pattern PATTERN = Pattern.compile("((?<sector>.*?) (?<sectorName>[\\p{Lu}\\d].*?)|(?<sectorWithoutName>.*?)) (?<row>Ряд) (?<rowName>.*?) (?<seat>Место) (?<seatName>.*)");
+  public long getId() {
+    return id;
+  }
 
-    private static final Map<String, String> MISPRINTS = Map.ofEntries(
-            Map.entry("С", "C"),
-            Map.entry("Е", "E"),
-            Map.entry("Т", "T"),
-            Map.entry("Н", "H"),
-            Map.entry("У", "Y"),
-            Map.entry("О", "O"),
-            Map.entry("Р", "P"),
-            Map.entry("Х", "X"),
-            Map.entry("А", "A"),
-            Map.entry("В", "B"),
-            Map.entry("К", "K"),
-            Map.entry("М", "M")
-    );
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public ParserSeat(){
+  public String getSector() {
+    return sector;
+  }
 
+  public void setSector(String sector) {
+    this.sector = sector;
+  }
+
+  public String getSectorName() {
+    return sectorName;
+  }
+
+  public void setSectorName(String sectorName) {
+    this.sectorName = sectorName;
+  }
+
+  public String getRow() {
+    return row;
+  }
+
+  public void setRow(String row) {
+    this.row = row;
+  }
+
+  public String getRowName() {
+    return rowName;
+  }
+
+  public void setRowName(String rowName) {
+    this.rowName = rowName;
+  }
+
+  public String getSeat() {
+    return seat;
+  }
+
+  public void setSeat(String seat) {
+    this.seat = seat;
+  }
+
+  public String getSeatName() {
+    return seatName;
+  }
+
+  public void setSeatName(String seatName) {
+    this.seatName = seatName;
+  }
+
+  public String getFullSector() {
+    String fullSector = concatenateWithSpace(sector, sectorName);
+      if (sector!= null && sector.equalsIgnoreCase("сектор")) {
+        return sectorName;
+      }
+    return fullSector;
+  }
+
+  public String getFullRow() {
+    return concatenateWithSpace(row, rowName);
+  }
+
+  public String getFullSeat() {
+    return concatenateWithSpace(seat, seatName);
+  }
+
+  // Вспомогательный метод для объединения строк с пробелом, если обе не null
+  private String concatenateWithSpace(String str1, String str2) {
+    if (str1 == null || str2 == null) {
+      return "";
     }
-
-    public static ResultParser parser(String seatName, long id){
-        Matcher m = PATTERN.matcher(seatName);
-
-        if (!m.find()) {
-            return null;
-        }
-
-        ResultParser result = new ResultParser();
-        result.setId(id);
-
-        String sectorWithoutName = m.group("sectorWithoutName");
-        if (sectorWithoutName != null) {
-            result.setSector(sectorWithoutName);
-            result.setSectorName("");
-        } else {
-            result.setSector(m.group("sector"));
-            result.setSectorName(m.group("sectorName"));
-        }
-
-        result.setRow(m.group("row"));
-        result.setRowName(m.group("rowName"));
-        result.setSeat(m.group("seat"));
-        result.setSeatName(m.group("seatName"));
-
-
-        if (result.getSector() == null || result.getRow() == null || result.getRowName() == null || result.getSeat() == null || result.getSeatName() == null) {
-            return null;
-        }
-
-        String sectorName = result.getSectorName();
-        if (sectorName != null) {
-            for (Map.Entry<String, String> entry : MISPRINTS.entrySet()) {
-                sectorName = sectorName.replace(entry.getKey(), entry.getValue());
-            }
-            result.setSectorName(sectorName);
-        }
-
-        return result;
-    }
-
+    return str1 + " " + str2;
+  }
 }

@@ -1,8 +1,8 @@
 package test;
 
 import org.junit.jupiter.api.Test;
+import test.service.ParserSeatService;
 import test.entity.ParserSeat;
-import test.entity.ResultParser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +12,7 @@ class ParserTest {
     void testParserSeatValidSeatNameReturnsResultParser() {
         String seatName = "Сектор A Ряд 1 Место 5";
         long id = 123;
-        ResultParser result = ParserSeat.parser(seatName, id);
+        ParserSeat result = ParserSeatService.parser(seatName, id);
 
         assertNotNull(result);
         assertEquals(id, result.getId());
@@ -32,7 +32,7 @@ class ParserTest {
     void testParserSeatSectorWithoutNameReturnsResultParser() {
         String seatName = "VIP Ряд 2 Место 10";
         long id = 456;
-        ResultParser result = ParserSeat.parser(seatName, id);
+        ParserSeat result = ParserSeatService.parser(seatName, id);
 
         assertNotNull(result);
         assertEquals(id, result.getId());
@@ -48,7 +48,7 @@ class ParserTest {
     void testParserSeatCyrillicSectorNameReturnsResultParserWithLatinSectorName() {
         String seatName = "Сектор M Ряд 3 Место 15";
         long id = 789;
-        ResultParser result = ParserSeat.parser(seatName, id);
+        ParserSeat result = ParserSeatService.parser(seatName, id);
 
         assertNotNull(result);
         assertEquals(id, result.getId());
@@ -64,14 +64,14 @@ class ParserTest {
     void testParserSeatInvalidSeatNameReturnsNull() {
         String seatName = "Invalid Seat Name";
         long id = 101112;
-        ResultParser result = ParserSeat.parser(seatName, id);
+        ParserSeat result = ParserSeatService.parser(seatName, id);
 
         assertNull(result);
     }
 
     @Test
     void testResultParserGetFullSectorSectorAndSectorNameReturnsCombinedString() {
-        ResultParser result = new ResultParser();
+        ParserSeat result = new ParserSeat();
         result.setSector("A");
         result.setSectorName("VIP");
         assertEquals("A VIP", result.getFullSector());
@@ -79,7 +79,7 @@ class ParserTest {
 
     @Test
     void testResultParserGetFullSectorSectorIsSectorReturnsSectorName() {
-        ResultParser result = new ResultParser();
+        ParserSeat result = new ParserSeat();
         result.setSector("сектор");
         result.setSectorName("VIP");
         assertEquals("VIP", result.getFullSector());
@@ -87,12 +87,12 @@ class ParserTest {
 
     @Test
     void testResultParserGetFullSectorNullSectorOrSectorNameReturnsEmptyString() {
-        ResultParser result1 = new ResultParser();
+        ParserSeat result1 = new ParserSeat();
         result1.setSector("A");
         result1.setSectorName(null);
         assertEquals("", result1.getFullSector());
 
-        ResultParser result2 = new ResultParser();
+        ParserSeat result2 = new ParserSeat();
         result2.setSector(null);
         result2.setSectorName("VIP");
         assertEquals("", result2.getFullSector());
@@ -100,7 +100,7 @@ class ParserTest {
 
     @Test
     void testResultParserGetFullRowValidRowAndRowNameReturnsCombinedString() {
-        ResultParser result = new ResultParser();
+        ParserSeat result = new ParserSeat();
         result.setRow("Ряд");
         result.setRowName("1");
         assertEquals("Ряд 1", result.getFullRow());
@@ -108,12 +108,12 @@ class ParserTest {
 
     @Test
     void testResultParserGetFullRowNullRowOrRowNameReturnsEmptyString() {
-        ResultParser result1 = new ResultParser();
+        ParserSeat result1 = new ParserSeat();
         result1.setRow("Ряд");
         result1.setRowName(null);
         assertEquals("", result1.getFullRow());
 
-        ResultParser result2 = new ResultParser();
+        ParserSeat result2 = new ParserSeat();
         result2.setRow(null);
         result2.setRowName("1");
         assertEquals("", result2.getFullRow());
@@ -121,7 +121,7 @@ class ParserTest {
 
     @Test
     void testResultParserGetFullSeatValidSeatAndSeatNameReturnsCombinedString() {
-        ResultParser result = new ResultParser();
+        ParserSeat result = new ParserSeat();
         result.setSeat("Место");
         result.setSeatName("5");
         assertEquals("Место 5", result.getFullSeat());
@@ -129,12 +129,12 @@ class ParserTest {
 
     @Test
     void testResultParserGetFullSeatNullSeatOrSeatNameReturnsEmptyString() {
-        ResultParser result1 = new ResultParser();
+        ParserSeat result1 = new ParserSeat();
         result1.setSeat("Место");
         result1.setSeatName(null);
         assertEquals("", result1.getFullSeat());
 
-        ResultParser result2 = new ResultParser();
+        ParserSeat result2 = new ParserSeat();
         result2.setSeat(null);
         result2.setSeatName("5");
         assertEquals("", result2.getFullSeat());
